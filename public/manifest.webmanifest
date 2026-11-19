@@ -1,0 +1,17 @@
+{
+  "name": "Bibi – Il tuo percorso spirituale quotidiano",
+  "short_name": "Bibi",
+  "description": "Bibi ti aiuta a non dimenticare le attività spirituali di ogni giorno.",
+  "lang": "it",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F6FA",
+  "theme_color": "#4A3D8F",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

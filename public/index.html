@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4A3D8F">
+<meta name="description" content="Bibi ti aiuta a non dimenticare le attività spirituali di ogni giorno.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bibi">
+<title>Bibi – Il tuo percorso spirituale quotidiano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#4A3D8F;      /* indaco-viola sobrio */
+  --primary-dark:#362C6E;
+  --primary-soft:#ECE9F7;
+  --primary-softer:#F6F4FB;
+  --ink:#24212E;
+  --muted:#6E6A7C;
+  --line:#E4E1EC;
+  --bg:#F7F6FA;
+  --card:#FFFFFF;
+  --ok:#3E8E63;
+  --ok-soft:#E3F2E9;
+  --bad:#C2453D;
+  --bad-soft:#FBE7E5;
+  --gold:#E2A13B;
+  --gold-soft:#FCF1DE;
+  --radius:20px;
+  --shadow:0 1px 2px rgba(36,33,46,.05),0 8px 24px rgba(74,61,143,.08);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans",system-ui,sans-serif;font-size:16px;line-height:1.45}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+a{color:var(--primary)}
+.app{max-width:520px;margin:0 auto;min-height:100vh;padding:calc(var(--safe-top) + 12px) 16px calc(var(--safe-bottom) + 96px);position:relative}
+.h-font{font-family:Nunito,"Noto Sans",sans-serif}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-badge{width:38px;height:38px;border-radius:12px;background:var(--primary);display:grid;place-items:center;color:#fff;font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:18px;letter-spacing:-.5px}
+.brand-name{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:22px;color:var(--primary-dark);letter-spacing:-.3px}
+.stats{display:flex;gap:8px}
+.pill{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:var(--card);box-shadow:var(--shadow);font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:800;font-size:15px}
+.pill svg{width:18px;height:18px}
+
+/* Hero */
+.hero{background:linear-gradient(160deg,var(--primary) 0%,#5C4EA6 60%,#7465B8 100%);color:#fff;border-radius:28px;padding:18px 18px 16px;position:relative;overflow:hidden;box-shadow:0 14px 36px rgba(74,61,143,.28)}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero-row{display:flex;align-items:flex-end;gap:12px;position:relative;z-index:1}
+.bibi-wrap{width:118px;height:118px;flex:0 0 auto;animation:bob 3.2s ease-in-out infinite}
+.bibi-wrap.jump{animation:jump .7s ease}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes jump{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-22px) scale(1.06,.96)}60%{transform:translateY(0) scale(.97,1.04)}100%{transform:translateY(0) scale(1)}}
+.bubble{background:#fff;color:var(--ink);border-radius:18px 18px 18px 4px;padding:11px 14px;font-size:14.5px;font-weight:500;box-shadow:0 6px 18px rgba(0,0,0,.12);margin-bottom:22px;position:relative}
+.bubble b{color:var(--primary)}
+.hero-foot{display:flex;align-items:center;gap:14px;margin-top:12px;position:relative;z-index:1}
+.ring{width:58px;height:58px;flex:0 0 auto;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:15px}
+.countdown{flex:1}
+.countdown small{display:block;opacity:.8;font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.countdown strong{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:26px;letter-spacing:.5px}
+
+/* Alert */
+.alert{display:none;margin-top:14px;padding:12px 14px;border-radius:16px;background:var(--gold-soft);color:#7A5214;font-weight:600;font-size:14px;align-items:center;gap:10px;border:1px solid #F1D9AE}
+.alert.show{display:flex}
+.alert svg{flex:0 0 22px}
+
+/* Section */
+.section-title{display:flex;justify-content:space-between;align-items:baseline;margin:22px 4px 10px}
+.section-title h2{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:20px;margin:0;color:var(--ink)}
+.section-title span{color:var(--muted);font-size:13px;font-weight:600}
+
+/* Tasks */
+.task{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:var(--radius);padding:12px 12px 12px 12px;margin-bottom:10px;box-shadow:var(--shadow);border:2px solid transparent;transition:transform .15s,border-color .2s,background .2s}
+.task:active{transform:scale(.985)}
+.task.done{background:var(--ok-soft);border-color:#BFE0CC}
+.task-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;flex:0 0 auto;background:var(--primary-soft);color:var(--primary)}
+.task.done .task-icon{background:#fff;color:var(--ok)}
+.task-icon svg{width:26px;height:26px}
+.task-body{flex:1;min-width:0}
+.task-title{font-weight:700;font-size:15.5px}
+.task-sub{font-size:12.5px;color:var(--muted);margin-top:1px}
+.task-link{display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:12.5px;font-weight:700;color:var(--primary);text-decoration:none;padding:3px 9px;border-radius:999px;background:var(--primary-softer)}
+.task.done .task-link{background:#fff}
+.check{width:40px;height:40px;border-radius:50%;border:2.5px solid var(--line);display:grid;place-items:center;flex:0 0 auto;transition:all .2s;background:#fff}
+.check svg{width:22px;height:22px;opacity:0;transform:scale(.5);transition:all .2s}
+.task.done .check{background:var(--ok);border-color:var(--ok)}
+.task.done .check svg{opacity:1;transform:scale(1);color:#fff}
+.task-off{opacity:.55}
+
+/* Cards */
+.card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.lesson-cta{display:flex;align-items:center;gap:14px}
+.lesson-cta .icon{width:56px;height:56px;border-radius:18px;background:var(--gold-soft);display:grid;place-items:center;color:var(--gold)}
+.lesson-cta .icon svg{width:30px;height:30px}
+
+/* Buttons (stile 3D) */
+.btn{display:block;width:100%;padding:14px 18px;border-radius:16px;font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:16.5px;letter-spacing:.3px;text-transform:uppercase;background:var(--primary);color:#fff;box-shadow:0 4px 0 var(--primary-dark);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--primary-dark)}
+.btn:disabled{background:#D9D6E2;color:#9C98A8;box-shadow:0 4px 0 #C5C1D0;cursor:not-allowed}
+.btn.ok{background:var(--ok);box-shadow:0 4px 0 #2E6B4A}
+.btn.bad{background:var(--bad);box-shadow:0 4px 0 #94322B}
+.btn.ghost{background:#fff;color:var(--primary);box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.btn.small{padding:10px 14px;font-size:14px;width:auto;display:inline-block}
+
+/* Bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 8px calc(var(--safe-bottom) + 8px);z-index:20}
+.nav-inner{max-width:520px;margin:0 auto;display:flex;justify-content:space-around}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:14px;font-size:11px;font-weight:700;color:var(--muted);flex:1;max-width:84px}
+.nav button svg{width:26px;height:26px}
+.nav button.active{color:var(--primary);background:var(--primary-soft)}
+
+.view{display:none;animation:fade .25s ease}
+.view.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* Week */
+.week{display:flex;justify-content:space-between;gap:6px}
+.day{flex:1;text-align:center}
+.day small{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.day .dot{width:100%;aspect-ratio:1;max-width:40px;margin:0 auto;border-radius:12px;background:var(--primary-softer);display:grid;place-items:center;font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:13px;color:var(--muted);border:2px solid transparent}
+.day .dot.full{background:var(--ok);color:#fff}
+.day .dot.part{background:var(--gold-soft);color:#8A5D14}
+.day .dot.today{border-color:var(--primary)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+.stat .n{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:28px;line-height:1.1}
+.stat .l{font-size:12.5px;color:var(--muted);font-weight:600}
+
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.badge{background:var(--card);border-radius:18px;padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
+.badge .b-ic{width:52px;height:52px;margin:0 auto 6px;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold)}
+.badge .b-ic svg{width:28px;height:28px}
+.badge.locked{opacity:.45;filter:grayscale(1)}
+.badge b{display:block;font-size:12.5px}
+.badge small{font-size:11px;color:var(--muted)}
+
+/* Settings */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.set-row:last-child{border-bottom:none}
+.set-row label{font-weight:600;font-size:15px}
+.set-row .hint{font-size:12.5px;color:var(--muted);font-weight:400}
+input[type=time],input[type=text]{font-family:inherit;font-size:16px;padding:9px 12px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+input[type=text]{width:100%}
+.switch{position:relative;width:50px;height:30px;flex:0 0 auto}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;background:#D9D6E2;border-radius:999px;transition:.2s}
+.switch span::before{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.switch input:checked+span{background:var(--primary)}
+.switch input:checked+span::before{transform:translateX(20px)}
+.days-pick{display:flex;gap:5px;margin-top:8px}
+.days-pick button{width:34px;height:34px;border-radius:10px;font-size:12px;font-weight:800;background:var(--primary-softer);color:var(--muted)}
+.days-pick button.on{background:var(--primary);color:#fff}
+.task-set{padding:12px 0;border-bottom:1px solid var(--line)}
+.task-set:last-child{border-bottom:none}
+.task-set-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* Lesson overlay */
+.lesson{position:fixed;inset:0;background:#fff;z-index:50;display:none;flex-direction:column;padding:calc(var(--safe-top) + 14px) 18px calc(var(--safe-bottom) + 18px)}
+.lesson.open{display:flex}
+.lesson-inner{max-width:520px;width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column}
+.l-top{display:flex;align-items:center;gap:12px}
+.l-close{width:36px;height:36px;display:grid;place-items:center;color:var(--muted)}
+.l-bar{flex:1;height:16px;border-radius:999px;background:var(--primary-soft);overflow:hidden}
+.l-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--primary),#7A6BC4);border-radius:999px;transition:width .4s ease;position:relative}
+.l-bar i::after{content:"";position:absolute;left:8px;right:8px;top:3px;height:4px;border-radius:4px;background:rgba(255,255,255,.35)}
+.l-q{margin-top:22px;display:flex;align-items:flex-start;gap:10px}
+.l-q .mini{width:78px;height:78px;flex:0 0 auto}
+.l-q .q-bubble{border:2px solid var(--line);border-radius:18px;padding:12px 14px;font-weight:700;font-size:17px;position:relative;margin-top:6px}
+.l-kind{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;color:var(--primary);font-size:14px;text-transform:uppercase;letter-spacing:.08em;margin-top:18px}
+.opts{display:grid;gap:10px;margin-top:18px}
+.opt{padding:15px 16px;border:2px solid var(--line);border-radius:16px;font-weight:600;font-size:16px;text-align:left;background:#fff;box-shadow:0 3px 0 var(--line);transition:all .1s}
+.opt.sel{border-color:var(--primary);background:var(--primary-soft);box-shadow:0 3px 0 #C7C0E6;color:var(--primary-dark)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft);box-shadow:0 3px 0 #A9D3BA}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);box-shadow:0 3px 0 #EBB7B2}
+.answer-line{min-height:62px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin-top:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;justify-content:center}
+.chip{padding:10px 14px;border:2px solid var(--line);border-radius:14px;font-weight:700;background:#fff;box-shadow:0 3px 0 var(--line)}
+.chip.used{visibility:hidden}
+.l-spacer{flex:1}
+.feedback{margin:0 -18px -18px;padding:16px 18px calc(var(--safe-bottom) + 18px);transition:background .2s}
+.feedback.ok{background:var(--ok-soft)}
+.feedback.bad{background:var(--bad-soft)}
+.fb-msg{display:none;font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:19px;margin-bottom:10px}
+.feedback.ok .fb-msg{display:block;color:var(--ok)}
+.feedback.bad .fb-msg{display:block;color:var(--bad)}
+.fb-msg small{display:block;font-family:"Noto Sans";font-weight:600;font-size:14px;margin-top:2px}
+
+.result{text-align:center;padding-top:30px}
+.result .bibi-big{width:170px;height:170px;margin:0 auto}
+.result h3{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:28px;margin:10px 0 4px;color:var(--primary-dark)}
+.result-stats{display:flex;gap:10px;justify-content:center;margin:18px 0}
+.r-box{border:2px solid var(--gold);border-radius:16px;overflow:hidden;min-width:110px}
+.r-box .t{background:var(--gold);color:#fff;font-weight:800;font-size:12px;padding:4px;text-transform:uppercase;letter-spacing:.06em}
+.r-box .v{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:24px;padding:8px}
+.r-box.g{border-color:var(--ok)}.r-box.g .t{background:var(--ok)}
+
+/* Toast */
+.toast{position:fixed;left:50%;top:calc(var(--safe-top) + 14px);transform:translate(-50%,-150%);background:var(--ink);color:#fff;padding:12px 16px;border-radius:16px;font-weight:600;font-size:14px;z-index:80;transition:transform .35s cubic-bezier(.2,1.4,.4,1);max-width:90vw;display:flex;gap:10px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.show{transform:translate(-50%,0)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:90}
+
+.footnote{font-size:12px;color:var(--muted);text-align:center;margin:22px 10px 0;line-height:1.5}
+.res-list a{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);font-weight:600}
+.res-list a:last-child{border-bottom:none}
+.res-list a span{color:var(--primary);font-weight:800}
+.modal-bg{position:fixed;inset:0;background:rgba(36,33,46,.45);z-index:60;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:26px 26px 0 0;width:100%;max-width:520px;padding:22px 20px calc(var(--safe-bottom) + 22px);animation:up .3s ease}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.modal h3{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:22px;margin:6px 0 6px;text-align:center}
+.modal p{color:var(--muted);text-align:center;margin:0 0 16px}
+a.btn{text-align:center;text-decoration:none}
+.cur-read{background:linear-gradient(160deg,#fff 0%,var(--primary-softer) 100%);border:2px solid var(--primary-soft)}
+.cur-read .eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cur-read .ref{font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:900;font-size:34px;color:var(--primary-dark);line-height:1.1;margin:4px 0 2px}
+.cur-read .meta{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:12px}
+.btn-row{display:grid;gap:12px;margin-top:14px}
+.bar{height:10px;border-radius:99px;background:var(--primary-soft);overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),#7A6BC4);border-radius:99px;transition:width .5s ease}
+.bar.ok i{background:var(--ok)}
+.bar-lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 6px}
+.bar-lbl b{color:var(--ink)}
+select{font-family:inherit;font-size:16px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);width:100%}
+.sel-row{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-top:10px}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
+.ch{aspect-ratio:1;border-radius:10px;background:var(--primary-softer);font-family:Nunito,"Noto Sans",system-ui,sans-serif;font-weight:800;font-size:13px;color:var(--muted)}
+.ch.read{background:var(--ok);color:#fff}
+.ch.cur{box-shadow:inset 0 0 0 2.5px var(--primary);color:var(--primary)}
+.ch.read.cur{color:#fff}
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ex{background:#fff;border-radius:20px;padding:14px;box-shadow:var(--shadow);text-align:left;display:flex;flex-direction:column;gap:6px;border:2px solid var(--line);border-bottom-width:5px;transition:transform .08s}
+.ex:active{transform:translateY(2px);border-bottom-width:3px}
+.ex.wide{grid-column:1/-1;flex-direction:row;align-items:center;gap:12px}
+.ex .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:0 0 auto}
+.ex .ic svg{width:26px;height:26px}
+.ex b{font-size:15px;line-height:1.25}
+.ex small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.ex .done-n{font-size:11.5px;font-weight:800;color:var(--ok)}
+.goal{display:flex;align-items:center;gap:12px}
+.goal .mini{width:72px;height:72px;flex:0 0 auto}
+textarea{font-family:inherit;font-size:16px;width:100%;min-height:150px;padding:12px 14px;border-radius:16px;border:2px solid var(--line);resize:vertical;color:var(--ink);margin-top:18px}
+textarea:focus,select:focus,input:focus{outline:none;border-color:var(--primary)}
+.j-item{padding:12px 0;border-bottom:1px solid var(--line)}
+.j-item:last-child{border-bottom:none}
+.j-item small{color:var(--muted);font-weight:700;font-size:12px}
+.j-item .p{font-weight:700;font-size:14px;margin:2px 0}
+.j-item .t{font-size:14.5px;white-space:pre-wrap}
+.empty{color:var(--muted);text-align:center;font-size:14px;padding:6px 0}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="toast" id="toast"></div>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-badge" aria-hidden="true">B</div>
+      <div class="brand-name">Bibi</div>
+    </div>
+    <div class="stats">
+      <div class="pill" title="Serie di giorni"><svg viewBox="0 0 24 24" fill="#E2A13B"><path d="M12 2c1 3.5 5 5.6 5 10.5A5 5 0 0 1 12 18a5 5 0 0 1-5-5.5c0-2 1-3.4 2-4.5.2 1.6 1 2.6 2 3 0-3 .5-6 1-9Z"/><path d="M12 22a6 6 0 0 1-6-6h2a4 4 0 0 0 8 0h2a6 6 0 0 1-6 6Z" opacity=".55"/></svg><span id="streakPill">0</span></div>
+      <div class="pill" title="Punti esperienza"><svg viewBox="0 0 24 24" fill="#4A3D8F"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg><span id="xpPill">0</span></div>
+    </div>
+  </header>
+
+  <!-- OGGI -->
+  <section class="view active" id="view-oggi">
+    <div class="hero">
+      <div class="hero-row">
+        <div class="bibi-wrap" id="bibiHero"></div>
+        <div class="bubble" id="bibiSays">Ciao! Sono Bibi.</div>
+      </div>
+      <div class="hero-foot">
+        <div class="ring">
+          <svg width="58" height="58" viewBox="0 0 58 58"><circle cx="29" cy="29" r="24" stroke="rgba(255,255,255,.22)" stroke-width="7" fill="none"/><circle id="ringArc" cx="29" cy="29" r="24" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="150.8" stroke-dashoffset="150.8" style="transition:stroke-dashoffset .6s ease"/></svg>
+          <span id="ringTxt">0/0</span>
+        </div>
+        <div class="countdown">
+          <small>Tempo fino a mezzanotte</small>
+          <strong id="countdown">--:--:--</strong>
+        </div>
+      </div>
+    </div>
+    <div class="alert" id="eveningAlert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+      <span id="alertTxt"></span>
+    </div>
+
+    <div class="section-title"><h2>Obiettivi di oggi</h2><span id="todayLabel"></span></div>
+    <div id="taskList"></div>
+
+    <div class="section-title"><h2>Esercizi</h2><span id="exTodayLbl"></span></div>
+    <div class="card lesson-cta">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg></div>
+      <div style="flex:1">
+        <div style="font-weight:700">Allenati con Bibi</div>
+        <div class="task-sub" id="lessonSub"></div>
+      </div>
+      <button class="btn small" id="goExBtn">Vai</button>
+    </div>
+  </section>
+
+  <!-- BIBBIA -->
+  <section class="view" id="view-bibbia">
+    <div class="section-title" style="margin-top:4px"><h2>La mia lettura</h2></div>
+    <div class="card cur-read">
+      <div class="eyebrow">Stai leggendo</div>
+      <div class="ref" id="curRef"></div>
+      <div class="meta" id="curMeta"></div>
+      <div class="bar"><i id="curBar"></i></div>
+      <div class="btn-row">
+        <a class="btn ghost" id="readLink" target="_blank" rel="noopener">Leggi su wol.jw.org ↗</a>
+        <button class="btn ok" id="markReadBtn">Ho letto questo capitolo</button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700">Cambia segnalibro</div>
+      <div class="sel-row"><select id="bookSel" aria-label="Libro"></select><select id="chapSel" aria-label="Capitolo"></select></div>
+    </div>
+    <div class="section-title"><h2 id="chTitle">Capitoli</h2><span id="chCount"></span></div>
+    <div class="card"><div class="chgrid" id="chGrid"></div><div class="task-sub" style="margin-top:10px">Tocca un capitolo per segnarlo come letto o non letto.</div></div>
+    <div class="section-title"><h2>Tutta la Bibbia</h2><span id="allPct"></span></div>
+    <div class="card">
+      <div class="bar"><i id="allBar"></i></div>
+      <div class="bar-lbl"><span>Scritture Ebraico-aramaiche</span><b id="otTxt"></b></div>
+      <div class="bar ok"><i id="otBar"></i></div>
+      <div class="bar-lbl"><span>Scritture Greche Cristiane</span><b id="ntTxt"></b></div>
+      <div class="bar ok"><i id="ntBar"></i></div>
+    </div>
+    <div class="section-title"><h2>Diario di lettura</h2><span id="jCount"></span></div>
+    <div class="card" id="journal"></div>
+    <div class="section-title"><h2>Risorse su jw.org</h2></div>
+    <div class="card res-list">
+      <a href="https://wol.jw.org/it/wol/h/r6/lp-i" target="_blank" rel="noopener">Scrittura del giorno <span>›</span></a>
+      <a href="https://www.jw.org/it/biblioteca-digitale/bibbia/nwt/libri/" target="_blank" rel="noopener">Bibbia – Traduzione del Nuovo Mondo <span>›</span></a>
+      <a href="https://www.jw.org/it/biblioteca-digitale/video/#it/categories/VODPgmEvtMorningWorship" target="_blank" rel="noopener">Adorazione mattutina (JW Broadcasting) <span>›</span></a>
+      <a href="https://wol.jw.org/it/wol/meetings/r6/lp-i" target="_blank" rel="noopener">Adunanze della settimana <span>›</span></a>
+      <a href="https://www.jw.org/it/biblioteca-digitale/" target="_blank" rel="noopener">Biblioteca digitale <span>›</span></a>
+    </div>
+    <p class="footnote">Bibi è un'app personale non ufficiale. Tutti i contenuti spirituali si aprono direttamente su jw.org e wol.jw.org.<br><a href="/privacy.html">Informativa privacy</a></p>
+  </section>
+
+  <!-- ESERCIZI -->
+  <section class="view" id="view-esercizi">
+    <div class="card goal" style="margin-top:4px">
+      <div class="mini" id="exBibi"></div>
+      <div style="flex:1">
+        <div style="font-weight:700">Obiettivo di oggi</div>
+        <div class="task-sub" id="exGoalTxt"></div>
+        <div class="bar" style="margin-top:8px"><i id="exGoalBar"></i></div>
+      </div>
+    </div>
+    <div class="section-title"><h2>Scegli un esercizio</h2><span>quanti ne vuoi</span></div>
+    <div class="ex-grid" id="exGrid"></div>
+  </section>
+
+  <!-- PROGRESSI -->
+  <section class="view" id="view-progressi">
+    <div class="section-title" style="margin-top:4px"><h2>Questa settimana</h2><span id="weekRange"></span></div>
+    <div class="card"><div class="week" id="weekGrid"></div></div>
+    <div class="grid2">
+      <div class="stat"><div class="n" id="stStreak">0</div><div class="l">Giorni di fila</div></div>
+      <div class="stat"><div class="n" id="stBest">0</div><div class="l">Record personale</div></div>
+      <div class="stat"><div class="n" id="stXp">0</div><div class="l">XP totali</div></div>
+      <div class="stat"><div class="n" id="stLessons">0</div><div class="l">Esercizi completati</div></div>
+    </div>
+    <div class="section-title"><h2>Traguardi</h2><span id="badgeCount"></span></div>
+    <div class="badges" id="badgeGrid"></div>
+  </section>
+
+  <!-- PROFILO -->
+  <section class="view" id="view-profilo">
+    <div class="section-title" style="margin-top:4px"><h2>Il tuo profilo</h2></div>
+    <div class="card">
+      <div class="set-row" style="display:block">
+        <label for="nameInput">Come ti chiami?</label>
+        <input type="text" id="nameInput" placeholder="Il tuo nome" style="margin-top:8px" maxlength="24">
+      </div>
+    </div>
+    <div class="section-title"><h2>Promemoria</h2></div>
+    <div class="card">
+      <div class="set-row">
+        <div><label>Avvisami alle</label><div class="hint">se qualcosa manca prima di mezzanotte</div></div>
+        <input type="time" id="remTime" value="21:30">
+      </div>
+      <div class="set-row">
+        <div><label>Secondo avviso</label><div class="hint">ultima chiamata alle 23:00</div></div>
+        <label class="switch"><input type="checkbox" id="remLast" checked><span></span></label>
+      </div>
+      <div class="set-row">
+        <div><label>Notifiche push</label><div class="hint" id="notifHint">anche con l'app chiusa</div></div>
+        <button class="btn small ghost" id="notifBtn">Attiva</button>
+      </div>
+      <div class="set-row" id="testRow" style="display:none">
+        <div><label>Prova le notifiche</label><div class="hint">ricevi subito un avviso di test</div></div>
+        <button class="btn small ghost" id="testBtn">Prova</button>
+      </div>
+      <div class="set-row" id="installRow" style="display:none">
+        <div><label>Installa Bibi</label><div class="hint" id="installHint">aggiungila alla schermata Home</div></div>
+        <button class="btn small" id="installBtn">Installa</button>
+      </div>
+    </div>
+    <div class="section-title"><h2>Le tue attività</h2><span>scegli i giorni</span></div>
+    <div class="card" id="taskSettings"></div>
+    <div class="card">
+      <button class="btn ghost" id="resetBtn">Azzera i progressi</button>
+    </div>
+  </section>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="active" data-view="oggi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Oggi</button>
+    <button data-view="bibbia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4a2 2 0 0 1 2-2h12v17H7a2 2 0 0 0-2 2z"/><path d="M5 21a2 2 0 0 0 2 1h12v-3"/><path d="M9 7h7M9 10.5h7M9 14h4"/></svg>Bibbia</button>
+    <button data-view="esercizi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17l-6.1 3.4 1.5-6.8L2.2 9l6.9-.7z"/></svg>Esercizi</button>
+    <button data-view="progressi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Progressi</button>
+    <button data-view="profilo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profilo</button>
+  </div>
+</nav>
+
+<!-- Lezione -->
+<div class="lesson" id="lesson">
+  <div class="lesson-inner">
+    <div class="l-top">
+      <button class="l-close" id="lessonClose" aria-label="Chiudi"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <div class="l-bar"><i id="lBar"></i></div>
+    </div>
+    <div id="lessonBody" style="display:flex;flex-direction:column;flex:1"></div>
+  </div>
+</div>
+
+<!-- Modale -->
+<div class="modal-bg" id="modal"><div class="modal" id="modalBody"></div></div>
+
+<script>
+/* ============ Bibi: coniglietto mini lop grigio ============ */
+function bibiSVG(mood){
+  mood = mood || 'happy';
+  const eyes = {
+    happy:`<circle cx="78" cy="98" r="9.5" fill="#2B2540"/><circle cx="122" cy="98" r="9.5" fill="#2B2540"/><circle cx="81" cy="94.5" r="3.4" fill="#fff"/><circle cx="125" cy="94.5" r="3.4" fill="#fff"/><circle cx="75.5" cy="101" r="1.6" fill="#fff" opacity=".8"/><circle cx="119.5" cy="101" r="1.6" fill="#fff" opacity=".8"/>`,
+    joy:`<path d="M69 100q9-11 18 0" stroke="#2B2540" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M113 100q9-11 18 0" stroke="#2B2540" stroke-width="4.5" fill="none" stroke-linecap="round"/>`,
+    worried:`<circle cx="78" cy="100" r="9" fill="#2B2540"/><circle cx="122" cy="100" r="9" fill="#2B2540"/><circle cx="81" cy="96.5" r="3.2" fill="#fff"/><circle cx="125" cy="96.5" r="3.2" fill="#fff"/><path d="M67 84l20 5M133 84l-20 5" stroke="#6F6C7C" stroke-width="3.5" stroke-linecap="round"/>`,
+    sad:`<circle cx="78" cy="101" r="9" fill="#2B2540"/><circle cx="122" cy="101" r="9" fill="#2B2540"/><circle cx="81" cy="97.5" r="3.2" fill="#fff"/><circle cx="125" cy="97.5" r="3.2" fill="#fff"/><path d="M67 89l19-7M133 89l-19-7" stroke="#6F6C7C" stroke-width="3.5" stroke-linecap="round"/><path d="M70 110q-3 7 0 10q3-3 0-10z" fill="#8EC5F0"/>`,
+    sleepy:`<path d="M70 100q8 5 16 0" stroke="#2B2540" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M114 100q8 5 16 0" stroke="#2B2540" stroke-width="4.5" fill="none" stroke-linecap="round"/>`
+  }[mood] || '';
+  const mouth = (mood==='sad'||mood==='worried')
+    ? `<path d="M92 132q8-5 16 0" stroke="#5A4A5E" stroke-width="3" fill="none" stroke-linecap="round"/>`
+    : (mood==='joy'
+      ? `<path d="M90 127q10 12 20 0z" fill="#7A3B4E"/><path d="M95 131q5 4 10 0" fill="#E98AA0"/>`
+      : `<path d="M100 122v5M100 127q-5 5-10 1M100 127q5 5 10 1" stroke="#5A4A5E" stroke-width="2.6" fill="none" stroke-linecap="round"/>`);
+  const extra = mood==='sleepy' ? `<text x="150" y="58" font-family="Nunito, sans-serif" font-weight="900" font-size="22" fill="#B9B2DD">z</text><text x="166" y="40" font-family="Nunito, sans-serif" font-weight="900" font-size="16" fill="#B9B2DD">z</text>` :
+                mood==='joy' ? `<path d="M30 40l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#F4C95D"/><path d="M168 54l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#F4C95D"/>` : '';
+  return `<svg viewBox="0 0 200 200" width="100%" height="100%" aria-label="Bibi, coniglietto mini lop grigio">
+    <ellipse cx="100" cy="192" rx="52" ry="7" fill="#000" opacity=".1"/>
+    <!-- corpo -->
+    <ellipse cx="100" cy="166" rx="50" ry="30" fill="#9C9AA8"/>
+    <ellipse cx="100" cy="172" rx="30" ry="20" fill="#D8D6E0"/>
+    <ellipse cx="74" cy="188" rx="15" ry="8" fill="#B0AEBB"/><ellipse cx="126" cy="188" rx="15" ry="8" fill="#B0AEBB"/>
+    <!-- testa -->
+    <ellipse cx="100" cy="102" rx="60" ry="52" fill="#ABA9B6"/>
+    <path d="M78 54q22-14 44 0q-22-6-44 0z" fill="#9C9AA8"/>
+    <ellipse cx="100" cy="64" rx="18" ry="8" fill="#B9B7C3"/>
+    <!-- muso -->
+    <ellipse cx="100" cy="124" rx="28" ry="20" fill="#E3E1E9"/>
+    <ellipse cx="66" cy="118" rx="9" ry="6" fill="#F2A7B8" opacity=".55"/>
+    <ellipse cx="134" cy="118" rx="9" ry="6" fill="#F2A7B8" opacity=".55"/>
+    ${eyes}
+    <path d="M94 115q6-4 12 0q-2 6-6 7q-4-1-6-7z" fill="#E98AA0"/>
+    ${mouth}
+    <!-- orecchie basse (mini lop) -->
+    <g>
+      <path d="M58 62C34 70 26 112 34 146c4 16 22 18 28 4c8-22 10-56 8-80c-1-7-6-10-12-8z" fill="#8F8D9C"/>
+      <path d="M56 74C42 86 38 116 42 140c2 8 11 9 14 1c5-18 7-44 6-62c0-5-3-7-6-5z" fill="#C9B3BE"/>
+      <path d="M142 62c24 8 32 50 24 84c-4 16-22 18-28 4c-8-22-10-56-8-80c1-7 6-10 12-8z" fill="#8F8D9C"/>
+      <path d="M144 74c14 12 18 42 14 66c-2 8-11 9-14 1c-5-18-7-44-6-62c0-5 3-7 6-5z" fill="#C9B3BE"/>
+    </g>
+    ${extra}
+  </svg>`;
+}
+
+/* ============ Dati ============ */
+const ICONS = {
+  bible:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4a2 2 0 0 1 2-2h12v17H7a2 2 0 0 0-2 2z"/><path d="M5 21a2 2 0 0 0 2 1h12v-3"/><path d="M9 7h7M9 10.5h7M9 14h4"/></svg>`,
+  text:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4M7.5 13h9M7.5 17h6"/></svg>`,
+  tv:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`,
+  pray:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-9.3-9A5 5 0 0 1 12 6.5 5 5 0 0 1 21.3 12C19 16.6 12 21 12 21z"/></svg>`,
+  family:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="7" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20a6 6 0 0 1 12 0M14 20a4 4 0 0 1 8 0"/></svg>`,
+  meeting:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V10l7-6 7 6v11"/><path d="M10 21v-5h4v5"/></svg>`,
+  ministry:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>`,
+  song:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`
+};
+const ALL = [0,1,2,3,4,5,6];
+const TASKS = [
+  {id:'testo',   title:'Scrittura del giorno', sub:'Leggi e medita il testo', icon:'text',   link:'https://wol.jw.org/it/wol/h/r6/lp-i', linkTxt:'Apri su wol.jw.org', days:ALL, on:true},
+  {id:'bibbia',  title:'Lettura della Bibbia', sub:'Il tuo brano quotidiano', icon:'bible',  link:'https://www.jw.org/it/biblioteca-digitale/bibbia/nwt/libri/', linkTxt:'Apri la Bibbia', days:ALL, on:true},
+  {id:'adoraz',  title:'Adorazione mattutina', sub:'Guarda il programma del giorno', icon:'tv', link:'https://www.jw.org/it/biblioteca-digitale/video/#it/categories/VODPgmEvtMorningWorship', linkTxt:'Guarda su jw.org', days:[1,2,3,4,5], on:true},
+  {id:'preghiera',title:'Preghiera insieme', sub:'Un momento in famiglia', icon:'pray', days:ALL, on:true},
+  {id:'studio',  title:'Studio familiare', sub:'Adorazione in famiglia', icon:'family', link:'https://www.jw.org/it/biblioteca-digitale/', linkTxt:'Trova materiale', days:ALL, on:true},
+  {id:'adunanza',title:'Preparazione adunanza', sub:'Prepara le risposte', icon:'meeting', link:'https://wol.jw.org/it/wol/meetings/r6/lp-i', linkTxt:'Programma della settimana', days:[2,5], on:false},
+  {id:'ministero',title:'Ministero', sub:'Predicazione o testimonianza informale', icon:'ministry', days:[6], on:false},
+  {id:'cantico', title:'Cantico del Regno', sub:'Ascolta o canta un cantico', icon:'song', link:'https://www.jw.org/it/biblioteca-digitale/video/', linkTxt:'Apri su jw.org', days:ALL, on:false}
+];
+const DAYNAMES = ['D','L','M','M','G','V','S'];
+const DAYFULL = ['domenica','lunedì','martedì','mercoledì','giovedì','venerdì','sabato'];
+
+const QUIZ = [
+  {q:'Quanti libri compongono la Bibbia?', o:['66','72','39','27'], a:0},
+  {q:'Chi costruì l’arca per sopravvivere al Diluvio?', o:['Abraamo','Noè','Mosè','Enoc'], a:1},
+  {q:'Con quale libro inizia la Bibbia?', o:['Esodo','Matteo','Genesi','Giobbe'], a:2},
+  {q:'Chi sconfisse il gigante Golia?', o:['Saul','Sansone','Gionatan','Davide'], a:3},
+  {q:'Quale nome di Dio è rivelato in Salmo 83:18?', o:['Geova','Emmanuele','Altissimo','Signore'], a:0},
+  {q:'Per quanti giorni e quante notti piovve durante il Diluvio?', o:['7','40','100','12'], a:1},
+  {q:'Chi fu gettato nella fossa dei leoni?', o:['Elia','Geremia','Daniele','Giona'], a:2},
+  {q:'Chi guidò gli israeliti fuori dall’Egitto?', o:['Giosuè','Aaronne','Mosè','Gedeone'], a:2},
+  {q:'Quale apostolo rinnegò Gesù tre volte?', o:['Pietro','Giovanni','Tommaso','Giuda'], a:0},
+  {q:'In quale città nacque Gesù?', o:['Nazaret','Betlemme','Gerusalemme','Cana'], a:1},
+  {q:'Chi era la moglie di Abraamo?', o:['Rebecca','Rachele','Lea','Sara'], a:3},
+  {q:'Quale libro viene subito dopo Atti?', o:['Romani','Galati','Ebrei','Giacomo'], a:0},
+  {q:'Chi spiegò i sogni del faraone?', o:['Daniele','Giuseppe','Mosè','Natan'], a:1},
+  {q:'Quanti apostoli scelse Gesù?', o:['7','10','12','70'], a:2},
+  {q:'Con quale libro termina la Bibbia?', o:['Giuda','Malachia','Rivelazione','3 Giovanni'], a:2},
+  {q:'Quale moabita rimase fedele alla suocera Noemi?', o:['Orpa','Rut','Ester','Rahab'], a:1},
+  {q:'Quale profeta fu inghiottito da un grosso pesce?', o:['Amos','Michea','Osea','Giona'], a:3},
+  {q:'Chi costruì il tempio di Gerusalemme?', o:['Salomone','Davide','Ezechia','Neemia'], a:0},
+  {q:'Secondo Galati 5:22, qual è il primo frutto dello spirito citato?', o:['Gioia','Pace','Amore','Pazienza'], a:2},
+  {q:'Chi era il padre di Giovanni Battista?', o:['Zaccaria','Giuseppe','Simeone','Eli'], a:0},
+  {q:'Quale regina visitò Salomone per metterne alla prova la sapienza?', o:['Ester','Vasti','Gezabele','La regina di Saba'], a:3},
+  {q:'Chi scrisse la maggior parte delle lettere delle Scritture Greche Cristiane?', o:['Pietro','Paolo','Giacomo','Luca'], a:1}
+];
+const ORDERS = [
+  {q:'Metti in ordine i primi quattro libri della Bibbia', w:['Genesi','Esodo','Levitico','Numeri']},
+  {q:'Metti in ordine i quattro Vangeli', w:['Matteo','Marco','Luca','Giovanni']},
+  {q:'Metti in ordine questi libri profetici', w:['Isaia','Geremia','Ezechiele','Daniele']},
+  {q:'Metti in ordine queste lettere di Paolo', w:['Romani','Galati','Efesini','Filippesi']}
+];
+const BADGES = [
+  {id:'first', t:'Primo passo', d:'1 giornata completa', icon:'check', test:s=>s.fullDays>=1},
+  {id:'s3', t:'Costante', d:'3 giorni di fila', icon:'text', test:s=>s.best>=3},
+  {id:'s7', t:'Una settimana', d:'7 giorni di fila', icon:'bible', test:s=>s.best>=7},
+  {id:'r10', t:'Lettore', d:'10 capitoli letti', icon:'bible', test:s=>s.chapters>=10},
+  {id:'book', t:'Libro completo', d:'Un libro intero', icon:'check', test:s=>s.books>=1},
+  {id:'l1', t:'Studioso', d:'1 esercizio', icon:'meeting', test:s=>s.lessons>=1},
+  {id:'l25', t:'Berea', d:'25 esercizi', icon:'song', test:s=>s.lessons>=25},
+  {id:'j5', t:'Riflessivo', d:'5 note nel diario', icon:'pray', test:s=>s.notes>=5},
+  {id:'xp500', t:'500 XP', d:'Punti esperienza', icon:'text', test:s=>s.xp>=500}
+];
+
+/* Libri della Bibbia (Traduzione del Nuovo Mondo) — [nome, capitoli] */
+const BOOKS = [["Genesi",50],["Esodo",40],["Levitico",27],["Numeri",36],["Deuteronomio",34],["Giosuè",24],["Giudici",21],["Rut",4],["1 Samuele",31],["2 Samuele",24],["1 Re",22],["2 Re",25],["1 Cronache",29],["2 Cronache",36],["Esdra",10],["Neemia",13],["Ester",10],["Giobbe",42],["Salmi",150],["Proverbi",31],["Ecclesiaste",12],["Cantico dei Cantici",8],["Isaia",66],["Geremia",52],["Lamentazioni",5],["Ezechiele",48],["Daniele",12],["Osea",14],["Gioele",3],["Amos",9],["Abdia",1],["Giona",4],["Michea",7],["Naum",3],["Abacuc",3],["Sofonia",3],["Aggeo",2],["Zaccaria",14],["Malachia",4],["Matteo",28],["Marco",16],["Luca",24],["Giovanni",21],["Atti",28],["Romani",16],["1 Corinti",16],["2 Corinti",13],["Galati",6],["Efesini",6],["Filippesi",4],["Colossesi",4],["1 Tessalonicesi",5],["2 Tessalonicesi",3],["1 Timoteo",6],["2 Timoteo",4],["Tito",3],["Filemone",1],["Ebrei",13],["Giacomo",5],["1 Pietro",5],["2 Pietro",3],["1 Giovanni",5],["2 Giovanni",1],["3 Giovanni",1],["Giuda",1],["Rivelazione",22]].map(([n,c],i)=>({n,c,i}));
+const TOTAL_CH = BOOKS.reduce((s,b)=>s+b.c,0);
+const wolLink=(b,c)=>`https://wol.jw.org/it/wol/b/r6/lp-i/nwtsty/${b+1}/${c}`;
+
+const DOVE = [
+  ['Il Discorso della Montagna','Matteo'],['La torre di Babele','Genesi'],['Il passaggio del Mar Rosso','Esodo'],
+  ['La caduta delle mura di Gerico','Giosuè'],['Sansone e i filistei','Giudici'],['Davide affronta Golia','1 Samuele'],
+  ['Elia e i profeti di Baal sul monte Carmelo','1 Re'],['Il profeta mandato a Ninive','Giona'],['I tre ebrei nella fornace ardente','Daniele'],
+  ['La regina che salvò il suo popolo dal piano di Haman','Ester'],['La ricostruzione delle mura di Gerusalemme','Neemia'],
+  ['Lo spirito santo versato alla Pentecoste','Atti'],['La parabola del figlio prodigo','Luca'],['La risurrezione di Lazzaro','Giovanni'],
+  ['La descrizione di ciò che è l’amore (“l’amore è paziente e benigno”)','1 Corinti'],['L’armatura completa di Dio','Efesini'],
+  ['Il nuovo cielo e la nuova terra','Rivelazione'],['Satana mette alla prova un uomo fedele di Uz','Giobbe'],
+  ['Il sogno dell’immensa statua di Nabucodonosor','Daniele'],['Paolo fa naufragio a Malta','Atti'],
+  ['Rut sceglie di restare con Noemi','Rut'],['Il buon samaritano','Luca'],['Il frutto dello spirito','Galati'],['L’esempio di fede di molti testimoni del passato','Ebrei']
+];
+const MIN = [
+  ['Il nome di Dio','Salmo 83:18'],['Pregare per il Regno di Dio','Matteo 6:9, 10'],['La speranza della risurrezione','Atti 24:15'],
+  ['I giusti vivranno sulla terra per sempre','Salmo 37:29'],['Niente più morte, lutto e dolore','Rivelazione 21:3, 4'],
+  ['Le caratteristiche degli ultimi giorni','2 Timoteo 3:1-5'],['La predicazione in tutta la terra','Matteo 24:14'],
+  ['La condizione dei morti','Ecclesiaste 9:5'],['Conoscere Dio porta alla vita eterna','Giovanni 17:3'],
+  ['Tutta la Scrittura è ispirata da Dio','2 Timoteo 3:16'],['Dio non mette alla prova nessuno con il male','Giacomo 1:13'],
+  ['Il Regno di Dio sostituirà i governi umani','Daniele 2:44']
+];
+const MEDIT = [
+  'Quale qualità di Geova hai notato nella lettura di oggi?',
+  'C’è un personaggio di cui vuoi imitare l’esempio? Perché?',
+  'Come puoi mettere in pratica quello che hai letto questa settimana?',
+  'Per chi vuoi pregare oggi, e per che cosa?',
+  'Quale versetto ti piacerebbe usare nel ministero? Scrivi il riferimento e come lo spiegheresti.',
+  'Per cosa vuoi ringraziare Geova oggi?',
+  'Quale punto dell’ultima adunanza ti è rimasto impresso?',
+  'C’è un aspetto della tua personalità su cui vuoi lavorare? Quale passo farai?'
+];
+const EX_GOAL = 3;
+const EX_CATS = [
+  {id:'lettura', t:'Sulla tua lettura', icon:'bible', bg:'var(--primary-soft)', fg:'var(--primary)', wide:true, sub:()=>`Domande e riflessione su ${BOOKS[S.bible.book].n}`},
+  {id:'personaggi', t:'Personaggi e fatti', icon:'family', bg:'var(--gold-soft)', fg:'var(--gold)', sub:()=>'Quiz biblico'},
+  {id:'libri', t:'Libri della Bibbia', icon:'text', bg:'var(--ok-soft)', fg:'var(--ok)', sub:()=>'Ordine e sezioni'},
+  {id:'dove', t:'Dove si trova?', icon:'meeting', bg:'#FBE7EE', fg:'#B24A6E', sub:()=>'Trova il libro giusto'},
+  {id:'ministero', t:'Versetti per il ministero', icon:'ministry', bg:'#E5F0FA', fg:'#2F6FA8', sub:()=>'Scegli la scrittura'},
+  {id:'meditazione', t:'Meditazione', icon:'pray', bg:'var(--primary-softer)', fg:'var(--primary)', wide:true, sub:()=>'Rifletti e scrivi nel tuo diario'}
+];
+function mc(q,right,wrongs){const o=shuffle([right,...shuffle(wrongs.filter(w=>w!==right)).slice(0,3)]);return {type:'mc',q,o,a:o.indexOf(right)};}
+function otherBooks(ex,n){return shuffle(BOOKS.filter(b=>!ex.includes(b.n))).slice(0,n).map(b=>b.n);}
+const sectionOf=i=>i<39?'Scritture Ebraico-aramaiche':'Scritture Greche Cristiane';
+function orderQ(start){const w=BOOKS.slice(start,start+4).map(b=>b.n);return {type:'order',q:'Metti in ordine questi libri',w};}
+const GEN = {
+  lettura(){
+    const b=BOOKS[S.bible.book], i=b.i, ch=lastReadCh();
+    const qs=[{type:'mc',q:`Il libro di ${b.n} fa parte delle…`,o:['Scritture Ebraico-aramaiche','Scritture Greche Cristiane'],a:i<39?0:1}];
+    const nums=new Set([b.c]); while(nums.size<4){const d=b.c+Math.round((Math.random()-.5)*Math.max(8,b.c*.6));if(d>0)nums.add(d);}
+    qs.push(mc(`Quanti capitoli ha ${b.n}?`,String(b.c),[...nums].filter(x=>x!==b.c).map(String)));
+    if(i<65) qs.push(mc(`Quale libro viene subito dopo ${b.n}?`,BOOKS[i+1].n,otherBooks([b.n,BOOKS[i+1].n],3)));
+    if(i>0) qs.push(mc(`Quale libro viene subito prima di ${b.n}?`,BOOKS[i-1].n,otherBooks([b.n,BOOKS[i-1].n],3)));
+    qs.push(orderQ(Math.min(Math.max(i-1,0),62)));
+    qs.push({type:'reflect',q:`Cosa ti ha colpito in ${b.n} ${ch}?`,ref:`${b.n} ${ch}`,ph:'Un pensiero, una domanda, un versetto che vuoi ricordare…'});
+    return qs;
+  },
+  personaggi(){return shuffle(QUIZ).slice(0,6).map(x=>({type:'mc',...x}));},
+  libri(){
+    const qs=[]; const r=shuffle(BOOKS).slice(0,6);
+    qs.push({type:'mc',q:`${r[0].n} fa parte delle…`,o:['Scritture Ebraico-aramaiche','Scritture Greche Cristiane'],a:r[0].i<39?0:1});
+    qs.push({type:'mc',q:`${r[1].n} fa parte delle…`,o:['Scritture Ebraico-aramaiche','Scritture Greche Cristiane'],a:r[1].i<39?0:1});
+    const nt=shuffle(BOOKS.filter(b=>b.i>=39))[0], ot=shuffle(BOOKS.filter(b=>b.i<39)).slice(0,3).map(b=>b.n);
+    qs.push(mc('Quale di questi libri fa parte delle Scritture Greche Cristiane?',nt.n,ot));
+    const x=r[2].i<65?r[2]:r[3]; qs.push(mc(`Quale libro viene subito dopo ${x.n}?`,BOOKS[x.i+1].n,otherBooks([x.n,BOOKS[x.i+1].n],3)));
+    const o=shuffle(ORDERS)[0]; qs.push({type:'order',q:o.q,w:o.w});
+    qs.push(orderQ(Math.floor(Math.random()*62)));
+    return qs;
+  },
+  dove(){
+    const pool=[...new Set(DOVE.map(d=>d[1]))];
+    return shuffle(DOVE).slice(0,6).map(([ev,bk])=>mc(`In quale libro si trova: “${ev}”?`,bk,shuffle(pool.filter(p=>p!==bk)).concat(otherBooks([bk],3))));
+  },
+  ministero(){
+    const refs=MIN.map(m=>m[1]);
+    return shuffle(MIN).slice(0,6).map(([tp,rf])=>mc(`Quale scrittura useresti per parlare di: ${tp.toLowerCase()}?`,rf,refs));
+  },
+  meditazione(){return shuffle(MEDIT).slice(0,2).map(p=>({type:'reflect',q:p,ph:'Scrivi liberamente…'}));}
+};
+
+/* ============ Stato ============ */
+const KEY='bibi-app-v1';
+let S = load();
+function defaults(){
+  const cfg={}; TASKS.forEach(t=>cfg[t.id]={on:t.on,days:[...t.days]});
+  return {name:'',xp:0,best:0,lessons:0,lessonDays:{},exDays:{},log:{},cfg,rem:'21:30',remLast:true,notified:{},bible:{book:0,ch:1,read:{}},journal:[]};
+}
+function load(){
+  try{const raw=localStorage.getItem(KEY); if(raw){const d=Object.assign(defaults(),JSON.parse(raw)); TASKS.forEach(t=>{if(!d.cfg[t.id])d.cfg[t.id]={on:t.on,days:[...t.days]}}); return d;}}catch(e){}
+  return defaults();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){} scheduleSync();}
+
+const pad=n=>String(n).padStart(2,'0');
+const keyOf=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const today=()=>new Date();
+function tasksFor(d){const wd=d.getDay(); return TASKS.filter(t=>S.cfg[t.id].on && S.cfg[t.id].days.includes(wd));}
+function doneFor(d){return S.log[keyOf(d)]||{};}
+function progress(d){const ts=tasksFor(d); const done=doneFor(d); const n=ts.filter(t=>done[t.id]).length; return {n,total:ts.length,full:ts.length>0&&n===ts.length};}
+function streak(){
+  let d=today(); let c=0;
+  if(!progress(d).full) d.setDate(d.getDate()-1);
+  for(let i=0;i<2000;i++){const p=progress(d); if(p.total===0){d.setDate(d.getDate()-1);continue;} if(!p.full)break; c++; d.setDate(d.getDate()-1);}
+  return c;
+}
+function fullDays(){return Object.keys(S.log).filter(k=>{const [y,m,dd]=k.split('-').map(Number);return progress(new Date(y,m-1,dd)).full}).length;}
+
+/* ============ Render ============ */
+function render(){
+  const st=streak(); if(st>S.best){S.best=st;save();}
+  document.getElementById('streakPill').textContent=st;
+  document.getElementById('xpPill').textContent=S.xp;
+  const d=today();
+  document.getElementById('todayLabel').textContent=DAYFULL[d.getDay()]+' '+d.getDate();
+  renderTasks(); renderHero(); renderProgress(); renderSettings(); renderBible(); renderEx();
+  const n=S.exDays[keyOf(d)]||0;
+  document.getElementById('exTodayLbl').textContent=`${Math.min(n,EX_GOAL)}/${EX_GOAL}`;
+  document.getElementById('lessonSub').textContent= n>=EX_GOAL ? `Obiettivo raggiunto: ${n} esercizi oggi ✓` : `${n} di ${EX_GOAL} esercizi fatti oggi · 6 categorie`;
+}
+/* ---- Bibbia ---- */
+function lastReadCh(){return S.bible.ch>1?S.bible.ch-1:S.bible.ch;}
+function readCount(from,to){let n=0;for(const k in S.bible.read){const b=+k.split(':')[0];if(b>=from&&b<=to)n++;}return n;}
+function chOf(from,to){return BOOKS.slice(from,to+1).reduce((s,b)=>s+b.c,0);}
+function booksDone(){return BOOKS.filter(b=>{for(let c=1;c<=b.c;c++)if(!S.bible.read[b.i+':'+c])return false;return true;}).length;}
+function renderBible(){
+  const B=S.bible, b=BOOKS[B.book];
+  document.getElementById('curRef').textContent=`${b.n} ${B.ch}`;
+  document.getElementById('curMeta').textContent=`Capitolo ${B.ch} di ${b.c} · ${sectionOf(b.i)}`;
+  const rb=readCount(b.i,b.i);
+  document.getElementById('curBar').style.width=(rb/b.c*100)+'%';
+  document.getElementById('readLink').href=wolLink(b.i,B.ch);
+  const bs=document.getElementById('bookSel');
+  if(!bs.options.length) bs.innerHTML=`<optgroup label="Scritture Ebraico-aramaiche">${BOOKS.slice(0,39).map(x=>`<option value="${x.i}">${x.n}</option>`).join('')}</optgroup><optgroup label="Scritture Greche Cristiane">${BOOKS.slice(39).map(x=>`<option value="${x.i}">${x.n}</option>`).join('')}</optgroup>`;
+  bs.value=B.book;
+  const cs=document.getElementById('chapSel');
+  cs.innerHTML=Array.from({length:b.c},(_,k)=>`<option value="${k+1}">Cap. ${k+1}</option>`).join(''); cs.value=B.ch;
+  document.getElementById('chTitle').textContent=`Capitoli di ${b.n}`;
+  document.getElementById('chCount').textContent=`${rb}/${b.c} letti`;
+  const g=document.getElementById('chGrid');
+  g.innerHTML=Array.from({length:b.c},(_,k)=>`<button class="ch ${B.read[b.i+':'+(k+1)]?'read':''} ${k+1===B.ch?'cur':''}" data-c="${k+1}">${k+1}</button>`).join('');
+  g.querySelectorAll('.ch').forEach(x=>x.addEventListener('click',()=>{const key=b.i+':'+x.dataset.c; if(B.read[key])delete B.read[key]; else B.read[key]=keyOf(today()); save(); renderBible(); renderProgress();}));
+  const all=readCount(0,65), ot=readCount(0,38), nt=readCount(39,65), otT=chOf(0,38), ntT=chOf(39,65);
+  document.getElementById('allBar').style.width=(all/TOTAL_CH*100)+'%';
+  document.getElementById('allPct').textContent=`${all}/${TOTAL_CH} capitoli · ${(all/TOTAL_CH*100).toFixed(1)}%`;
+  document.getElementById('otBar').style.width=(ot/otT*100)+'%'; document.getElementById('otTxt').textContent=`${ot}/${otT}`;
+  document.getElementById('ntBar').style.width=(nt/ntT*100)+'%'; document.getElementById('ntTxt').textContent=`${nt}/${ntT}`;
+  const j=document.getElementById('journal');
+  document.getElementById('jCount').textContent=S.journal.length?`${S.journal.length} note`:'';
+  j.innerHTML=S.journal.length?S.journal.slice(0,20).map(e=>`<div class="j-item"><small>${e.d}${e.ref?' · '+esc(e.ref):''}</small><div class="p">${esc(e.p)}</div><div class="t">${esc(e.t)}</div></div>`).join(''):'<div class="empty">Le riflessioni che scrivi negli esercizi compariranno qui.</div>';
+}
+function markChapterRead(){
+  const B=S.bible, b=BOOKS[B.book]; const k=keyOf(today());
+  const key=b.i+':'+B.ch; const was=!!B.read[key];
+  B.read[key]=k; if(!was) S.xp+=5;
+  const ref=`${b.n} ${B.ch}`;
+  let finishedBook=false;
+  if(B.ch<b.c) B.ch++; else if(B.book<65){B.book++;B.ch=1;finishedBook=true;}
+  S.log[k]=S.log[k]||{};
+  const bt=S.cfg.bibbia; const scheduled=bt.on&&bt.days.includes(today().getDay());
+  const before=progress(today()).full;
+  if(scheduled && !S.log[k].bibbia){const n=new Date();S.log[k].bibbia=`${pad(n.getHours())}:${pad(n.getMinutes())}`;S.xp+=10;}
+  save(); render();
+  if(finishedBook){confetti();openModal('joy','Libro completato!',`Hai finito <b>${b.n}</b>. Il segnalibro passa a <b>${BOOKS[B.book].n} 1</b>.`);}
+  else if(!before&&progress(today()).full){confetti();openModal('joy','Giornata completata!',`Serie di <b>${streak()}</b> ${streak()===1?'giorno':'giorni'}. Bibi è fiero di te!`);}
+  else toast(`${ref} letto ✓ · prossimo: ${BOOKS[B.book].n} ${B.ch}`);
+}
+document.getElementById('markReadBtn').addEventListener('click',markChapterRead);
+document.getElementById('bookSel').addEventListener('change',e=>{S.bible.book=+e.target.value;S.bible.ch=1;save();render();});
+document.getElementById('chapSel').addEventListener('change',e=>{S.bible.ch=+e.target.value;save();render();});
+/* ---- Esercizi ---- */
+function renderEx(){
+  const n=S.exDays[keyOf(today())]||0;
+  document.getElementById('exBibi').innerHTML=bibiSVG(n>=EX_GOAL?'joy':'happy');
+  document.getElementById('exGoalTxt').textContent=n>=EX_GOAL?`Fatto! ${n} esercizi oggi. Puoi continuare quanto vuoi.`:`${n} di ${EX_GOAL} esercizi · +XP per ognuno`;
+  document.getElementById('exGoalBar').style.width=Math.min(100,n/EX_GOAL*100)+'%';
+  const per=S.exCount||{};
+  document.getElementById('exGrid').innerHTML=EX_CATS.map(c=>`<button class="ex ${c.wide?'wide':''}" data-c="${c.id}"><div class="ic" style="background:${c.bg};color:${c.fg}">${ICONS[c.icon]}</div><div><b>${c.t}</b><br><small>${c.sub()}</small>${per[c.id]?`<div class="done-n">${per[c.id]} completati</div>`:''}</div></button>`).join('');
+  document.querySelectorAll('#exGrid .ex').forEach(b=>b.addEventListener('click',()=>startLesson(b.dataset.c)));
+}
+function renderTasks(){
+  const d=today(); const done=doneFor(d); const list=tasksFor(d);
+  const el=document.getElementById('taskList');
+  if(!list.length){el.innerHTML='<div class="card" style="text-align:center;color:var(--muted)">Nessuna attività per oggi. Attivale dal Profilo.</div>';return;}
+  el.innerHTML=list.map(t=>`
+    <div class="task ${done[t.id]?'done':''}" data-id="${t.id}">
+      <div class="task-icon">${ICONS[t.icon]}</div>
+      <div class="task-body">
+        <div class="task-title">${t.title}</div>
+        <div class="task-sub">${done[t.id]?'Fatto alle '+done[t.id]+' · +10 XP':(t.id==='bibbia'?'Segnalibro: '+BOOKS[S.bible.book].n+' '+S.bible.ch:t.sub)}</div>
+        ${t.id==='bibbia'?`<a class="task-link" href="${wolLink(S.bible.book,S.bible.ch)}" target="_blank" rel="noopener">Leggi ${BOOKS[S.bible.book].n} ${S.bible.ch} ↗</a>`:(t.link?`<a class="task-link" href="${t.link}" target="_blank" rel="noopener">${t.linkTxt} ↗</a>`:'')}
+      </div>
+      <button class="check" aria-label="Segna come fatto">${ICONS.check}</button>
+    </div>`).join('');
+  el.querySelectorAll('.check').forEach(b=>b.addEventListener('click',e=>{toggleTask(b.closest('.task').dataset.id)}));
+}
+function minsToMidnight(){const n=new Date();const m=new Date(n);m.setHours(24,0,0,0);return (m-n)/60000;}
+function renderHero(){
+  const p=progress(today()); const name=S.name?S.name:'';
+  const h=new Date().getHours(); const [rh,rm]=S.rem.split(':').map(Number);
+  const late = (h*60+new Date().getMinutes()) >= (rh*60+rm);
+  let mood='happy', msg='';
+  const hi = name?`Ciao <b>${esc(name)}</b>!`:'Ciao!';
+  if(p.total===0){mood='sleepy';msg=`${hi} Oggi niente attività in programma. Riposati un po'.`;}
+  else if(p.full){mood='joy';msg=`Fantastico! Hai completato tutto. Geova apprezza il tuo impegno.`;}
+  else if(late){mood=h>=23?'sad':'worried';msg=`Mancano ancora <b>${p.total-p.n}</b> attività e la giornata sta finendo. Ce la facciamo insieme?`;}
+  else if(p.n===0){mood='happy';msg=h<12?`${hi} Iniziamo la giornata con la scrittura del giorno?`:`${hi} Hai <b>${p.total}</b> obiettivi per oggi.`;}
+  else {mood='happy';msg=`Bravo! <b>${p.n}</b> su ${p.total}. Continua così!`;}
+  document.getElementById('bibiHero').innerHTML=bibiSVG(mood);
+  document.getElementById('bibiSays').innerHTML=msg;
+  const frac=p.total?p.n/p.total:0;
+  document.getElementById('ringArc').style.strokeDashoffset=150.8*(1-frac);
+  document.getElementById('ringTxt').textContent=`${p.n}/${p.total}`;
+  const al=document.getElementById('eveningAlert');
+  if(late && !p.full && p.total){al.classList.add('show');
+    const left=tasksFor(today()).filter(t=>!doneFor(today())[t.id]).map(t=>t.title.toLowerCase());
+    document.getElementById('alertTxt').textContent=`Prima di mezzanotte: ${left.join(', ')}.`;
+  } else al.classList.remove('show');
+}
+function renderProgress(){
+  const d=today(); const start=new Date(d); const off=(d.getDay()+6)%7; start.setDate(d.getDate()-off);
+  const g=document.getElementById('weekGrid'); let html='';
+  for(let i=0;i<7;i++){const x=new Date(start);x.setDate(start.getDate()+i);const p=progress(x);
+    const cls=p.full?'full':(p.n>0?'part':''); const isT=keyOf(x)===keyOf(d);
+    html+=`<div class="day"><small>${DAYNAMES[x.getDay()]}</small><div class="dot ${cls} ${isT?'today':''}">${p.full?'✓':x.getDate()}</div></div>`;}
+  g.innerHTML=html;
+  const end=new Date(start);end.setDate(start.getDate()+6);
+  document.getElementById('weekRange').textContent=`${start.getDate()}/${start.getMonth()+1} – ${end.getDate()}/${end.getMonth()+1}`;
+  const st={xp:S.xp,best:Math.max(S.best,streak()),lessons:S.lessons,fullDays:fullDays(),chapters:Object.keys(S.bible.read).length,books:booksDone(),notes:S.journal.length};
+  document.getElementById('stStreak').textContent=streak();
+  document.getElementById('stBest').textContent=st.best;
+  document.getElementById('stXp').textContent=S.xp;
+  document.getElementById('stLessons').textContent=S.lessons;
+  let got=0;
+  document.getElementById('badgeGrid').innerHTML=BADGES.map(b=>{const ok=b.test(st);if(ok)got++;return `<div class="badge ${ok?'':'locked'}"><div class="b-ic">${ICONS[b.icon]}</div><b>${b.t}</b><small>${b.d}</small></div>`}).join('');
+  document.getElementById('badgeCount').textContent=`${got}/${BADGES.length}`;
+}
+function renderSettings(){
+  const nI=document.getElementById('nameInput'); if(document.activeElement!==nI) nI.value=S.name;
+  document.getElementById('remTime').value=S.rem;
+  document.getElementById('remLast').checked=S.remLast;
+  const el=document.getElementById('taskSettings');
+  el.innerHTML=TASKS.map(t=>{const c=S.cfg[t.id];return `
+    <div class="task-set ${c.on?'':'task-off'}" data-id="${t.id}">
+      <div class="task-set-head"><label style="font-weight:700">${t.title}</label>
+        <label class="switch"><input type="checkbox" class="tOn" ${c.on?'checked':''}><span></span></label></div>
+      <div class="days-pick">${[1,2,3,4,5,6,0].map(w=>`<button data-w="${w}" class="${c.days.includes(w)?'on':''}">${DAYNAMES[w]}</button>`).join('')}</div>
+    </div>`}).join('');
+  el.querySelectorAll('.task-set').forEach(row=>{
+    const id=row.dataset.id;
+    row.querySelector('.tOn').addEventListener('change',e=>{S.cfg[id].on=e.target.checked;save();render();});
+    row.querySelectorAll('.days-pick button').forEach(b=>b.addEventListener('click',()=>{
+      const w=+b.dataset.w; const ds=S.cfg[id].days; const i=ds.indexOf(w); if(i>=0)ds.splice(i,1);else ds.push(w); save(); render();
+    }));
+  });
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+/* ============ Azioni ============ */
+function toggleTask(id){
+  const k=keyOf(today()); S.log[k]=S.log[k]||{};
+  const before=progress(today()).full;
+  if(S.log[k][id]){delete S.log[k][id]; S.xp=Math.max(0,S.xp-10);}
+  else {const n=new Date(); S.log[k][id]=`${pad(n.getHours())}:${pad(n.getMinutes())}`; S.xp+=10; bounce(); toast('+10 XP · '+TASKS.find(t=>t.id===id).title);}
+  save(); render();
+  if(!before && progress(today()).full){confetti(); setTimeout(()=>openModal('joy','Giornata completata!',`Serie di <b>${streak()}</b> ${streak()===1?'giorno':'giorni'}. Bibi è fiero di te!`),500);}
+}
+function bounce(){const w=document.getElementById('bibiHero');w.classList.remove('jump');void w.offsetWidth;w.classList.add('jump');setTimeout(()=>w.classList.remove('jump'),700);}
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.innerHTML=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2400);}
+function openModal(mood,title,text,btn){
+  document.getElementById('modalBody').innerHTML=`<div style="width:130px;height:130px;margin:0 auto">${bibiSVG(mood)}</div><h3>${title}</h3><p>${text}</p><button class="btn" id="mOk">${btn||'Continua'}</button>`;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('mOk').onclick=closeModal;
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+
+/* Navigazione */
+function goTo(v){
+  document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.view===v));
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>goTo(b.dataset.view)));
+document.getElementById('goExBtn').addEventListener('click',()=>goTo('esercizi'));
+
+/* Impostazioni */
+document.getElementById('nameInput').addEventListener('input',e=>{S.name=e.target.value.trim();save();renderHero();});
+document.getElementById('remTime').addEventListener('change',e=>{S.rem=e.target.value||'21:30';save();render();});
+document.getElementById('remLast').addEventListener('change',e=>{S.remLast=e.target.checked;save();});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  document.getElementById('modalBody').innerHTML=`<div style="width:120px;height:120px;margin:0 auto">${bibiSVG('worried')}</div><h3>Azzerare tutto?</h3><p>Serie, XP e storico verranno cancellati.</p><div style="display:grid;gap:12px"><button class="btn bad" id="rYes">Sì, azzera</button><button class="btn ghost" id="rNo">Annulla</button></div>`;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('rYes').onclick=()=>{S=defaults();save();closeModal();render();toast('Progressi azzerati');};
+  document.getElementById('rNo').onclick=closeModal;
+});
+/* ============ PWA + notifiche push ============ */
+const notifBtn=document.getElementById('notifBtn');
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const pushSupported=('serviceWorker' in navigator)&&('PushManager' in window)&&('Notification' in window);
+let swReg=null;
+function notifState(){try{return ('Notification' in window)?Notification.permission:'unsupported'}catch(e){return 'unsupported'}}
+function deviceId(){if(!S.deviceId){S.deviceId=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}return S.deviceId;}
+function b64ToUint8(b64){const p='='.repeat((4-b64.length%4)%4);const s=atob((b64+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from([...s].map(c=>c.charCodeAt(0)));}
+function syncPayload(sub){
+  const d=today();
+  return {id:deviceId(),subscription:sub||undefined,tz:Intl.DateTimeFormat().resolvedOptions().timeZone,rem:S.rem,remLast:S.remLast,
+    date:keyOf(d),done:Object.keys(doneFor(d)),streak:streak(),
+    tasks:TASKS.map(t=>({id:t.id,title:t.title,on:S.cfg[t.id].on,days:S.cfg[t.id].days}))};
+}
+async function api(path,body){const r=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok)throw new Error(await r.text());return r.json().catch(()=>({}));}
+var syncT=null;
+function scheduleSync(){if(!S.pushOn)return;clearTimeout(syncT);syncT=setTimeout(()=>{api('/api/sync',syncPayload()).catch(()=>{});},800);}
+function updNotif(){
+  const h=document.getElementById('notifHint'); const s=notifState();
+  document.getElementById('testRow').style.display=S.pushOn?'flex':'none';
+  notifBtn.disabled=false;
+  if(!pushSupported){
+    if(isIOS&&!isStandalone){h.textContent='su iPhone: prima aggiungi Bibi alla schermata Home';notifBtn.textContent='Come?';notifBtn.onclick=showIOSHelp;}
+    else {h.textContent='non supportate da questo browser: useremo gli avvisi nell\u2019app';notifBtn.textContent='Non disp.';notifBtn.disabled=true;}
+    return;
+  }
+  if(s==='denied'){h.textContent='bloccate: riattivale dalle impostazioni del telefono';notifBtn.textContent='Bloccate';notifBtn.disabled=true;return;}
+  if(S.pushOn){h.textContent='attive: ti avviseremo entro mezzanotte';notifBtn.textContent='Disattiva';notifBtn.onclick=disablePush;}
+  else {h.textContent='anche con l\u2019app chiusa';notifBtn.textContent='Attiva';notifBtn.onclick=enablePush;}
+}
+async function enablePush(){
+  try{
+    notifBtn.disabled=true; notifBtn.textContent='…';
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted'){toast('Permesso negato per le notifiche');updNotif();return;}
+    const reg=swReg||await navigator.serviceWorker.ready;
+    const {publicKey}=await (await fetch('/api/vapid')).json();
+    if(!publicKey) throw new Error('Chiave VAPID mancante sul server');
+    let sub=await reg.pushManager.getSubscription();
+    if(!sub) sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64ToUint8(publicKey)});
+    await api('/api/sync',syncPayload(sub.toJSON()));
+    S.pushOn=true; save(); toast('Notifiche attivate 🔔'); bounce();
+  }catch(e){console.error(e);toast('Impossibile attivare le notifiche: '+e.message);}
+  updNotif();
+}
+async function disablePush(){
+  try{const reg=swReg||await navigator.serviceWorker.ready;const sub=await reg.pushManager.getSubscription();if(sub)await sub.unsubscribe();}catch(e){}
+  try{await api('/api/unsubscribe',{id:deviceId()});}catch(e){}
+  S.pushOn=false; save(); toast('Notifiche disattivate'); updNotif();
+}
+document.getElementById('testBtn').addEventListener('click',async()=>{
+  try{await api('/api/sync',syncPayload());await api('/api/test',{id:deviceId()});toast('Notifica di prova inviata');}
+  catch(e){toast('Errore: '+e.message);}
+});
+function showIOSHelp(){
+  document.getElementById('modalBody').innerHTML=`<div style="width:110px;height:110px;margin:0 auto">${bibiSVG('happy')}</div><h3>Installa Bibi su iPhone</h3>
+  <p style="text-align:left">1. Apri questa pagina con <b>Safari</b>.<br>2. Tocca il pulsante <b>Condividi</b> (il quadrato con la freccia).<br>3. Scegli <b>Aggiungi alla schermata Home</b>.<br>4. Apri Bibi dall\u2019icona e attiva le notifiche dal Profilo.</p><button class="btn" id="mOk">Ho capito</button>`;
+  document.getElementById('modal').classList.add('open'); document.getElementById('mOk').onclick=closeModal;
+}
+/* Installazione */
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installRow').style.display='flex';});
+document.getElementById('installBtn').addEventListener('click',async()=>{
+  if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('installRow').style.display='none';}
+  else showIOSHelp();
+});
+if(isIOS&&!isStandalone){document.getElementById('installRow').style.display='flex';}
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js').then(r=>{swReg=r;}).catch(e=>console.warn('SW',e));
+}
+updNotif();
+if(S.pushOn) scheduleSync();
+updNotif();
+
+/* ============ Promemoria ============ */
+function checkReminders(){
+  const n=new Date(); const k=keyOf(n); const p=progress(n); if(p.full||!p.total)return;
+  const mins=n.getHours()*60+n.getMinutes(); const [rh,rm]=S.rem.split(':').map(Number);
+  S.notified[k]=S.notified[k]||{};
+  const fire=(slot,title,body,mood)=>{
+    if(S.notified[k][slot])return; S.notified[k][slot]=1; save();
+    openModal(mood,title,body,'Ci penso subito');
+  };
+  const left=p.total-p.n;
+  if(mins>=rh*60+rm) fire('main','Bibi ti aspetta!',`Hai ancora ${left} ${left===1?'attività':'attività'} da completare prima di mezzanotte.`,'worried');
+  if(S.remLast && mins>=23*60) fire('last','Ultima chiamata!',`Manca meno di un’ora a mezzanotte: non perdere la tua serie di ${streak()} giorni.`,'sad');
+}
+function tick(){
+  const m=minsToMidnight(); const s=Math.floor(m*60);
+  document.getElementById('countdown').textContent=`${pad(Math.floor(s/3600))}:${pad(Math.floor(s%3600/60))}:${pad(s%60)}`;
+}
+let lastDay=keyOf(today());
+setInterval(()=>{tick(); const k=keyOf(today()); if(k!==lastDay){lastDay=k;render();}},1000);
+setInterval(()=>{checkReminders();renderHero();},30000);
+
+/* ============ Lezione ============ */
+let L=null;
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startLesson(cat){
+  cat=cat||'personaggi';
+  const qs=GEN[cat]();
+  L={cat,qs,i:0,correct:0,state:'ask',sel:null,picked:[],combo:0};
+  document.getElementById('lesson').classList.add('open');
+  renderQ();
+}
+function renderQ(){
+  const q=L.qs[L.i]; document.getElementById('lBar').style.width=(L.i/L.qs.length*100)+'%';
+  const body=document.getElementById('lessonBody');
+  const kind={order:'Riordina',mc:'Scegli la risposta giusta',reflect:'Rifletti e scrivi'}[q.type];
+  let inner=`<div class="l-kind">${kind}${L.combo>=2?' · <span style="color:var(--gold)">'+L.combo+' di fila!</span>':''}</div>
+    <div class="l-q"><div class="mini">${bibiSVG('happy')}</div><div class="q-bubble">${esc(q.q)}</div></div>`;
+  if(q.type==='reflect'){
+    inner+=`<textarea id="refTxt" placeholder="${q.ph||''}"></textarea><div class="task-sub" style="margin-top:6px">Verrà salvato nel tuo diario di lettura.</div>`;
+  } else if(q.type==='mc'){
+    q.order=q.order||shuffle(q.o.map((_,i)=>i));
+    inner+=`<div class="opts">${q.order.map(i=>`<button class="opt" data-i="${i}">${q.o[i]}</button>`).join('')}</div>`;
+  } else {
+    q.pool=q.pool||shuffle(q.w);
+    inner+=`<div class="answer-line" id="ansLine"></div><div class="chips">${q.pool.map((w,i)=>`<button class="chip" data-i="${i}">${w}</button>`).join('')}</div>`;
+  }
+  inner+=`<div class="l-spacer"></div><div class="feedback" id="fb"><div class="fb-msg" id="fbMsg"></div><button class="btn" id="checkBtn" disabled>Verifica</button></div>`;
+  body.innerHTML=inner;
+  L.state='ask';L.sel=null;L.picked=[];
+  const cb=document.getElementById('checkBtn');
+  if(q.type==='reflect'){
+    cb.textContent='Salva nel diario';
+    const ta=document.getElementById('refTxt'); ta.addEventListener('input',()=>{cb.disabled=ta.value.trim().length<3;});
+  } else if(q.type==='mc'){
+    body.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{if(L.state!=='ask')return;body.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');L.sel=+b.dataset.i;cb.disabled=false;}));
+  } else {
+    const line=document.getElementById('ansLine');
+    const redraw=()=>{line.innerHTML=L.picked.map((pi,k)=>`<button class="chip" data-k="${k}">${q.pool[pi]}</button>`).join('');
+      body.querySelectorAll('.chips .chip').forEach(c=>c.classList.toggle('used',L.picked.includes(+c.dataset.i)));
+      line.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{if(L.state!=='ask')return;L.picked.splice(+c.dataset.k,1);redraw();}));
+      cb.disabled=L.picked.length!==q.w.length;};
+    body.querySelectorAll('.chips .chip').forEach(c=>c.addEventListener('click',()=>{if(L.state!=='ask'||c.classList.contains('used'))return;L.picked.push(+c.dataset.i);redraw();}));
+  }
+  cb.addEventListener('click',onCheck);
+}
+function onCheck(){
+  const q=L.qs[L.i]; const fb=document.getElementById('fb'); const msg=document.getElementById('fbMsg'); const cb=document.getElementById('checkBtn');
+  if(L.state==='ask'){
+    let ok; let right='';
+    if(q.type==='reflect'){
+      const t=document.getElementById('refTxt').value.trim(); ok=true;
+      const n=new Date(); S.journal.unshift({d:`${n.getDate()}/${n.getMonth()+1}/${n.getFullYear()}`,ref:q.ref||'',p:q.q,t}); save();
+      document.getElementById('refTxt').readOnly=true;
+    } else if(q.type==='mc'){ok=L.sel===q.a; right=q.o[q.a];
+      document.querySelectorAll('.opt').forEach(b=>{const i=+b.dataset.i; if(i===q.a)b.classList.add('right'); else if(i===L.sel)b.classList.add('wrong');});}
+    else {const ans=L.picked.map(i=>q.pool[i]); ok=ans.join('|')===q.w.join('|'); right=q.w.join(' → ');}
+    if(ok){L.correct++;L.combo++;}else{L.combo=0;}
+    fb.className='feedback '+(ok?'ok':'bad');
+    msg.innerHTML=q.type==='reflect'?'Salvato nel diario!':ok?(['Ottimo!','Esatto!','Bravissimo!','Perfetto!'][Math.floor(Math.random()*4)]):`Risposta corretta:<small>${right}</small>`;
+    cb.className='btn '+(ok?'ok':'bad'); cb.textContent='Continua'; L.state='shown';
+    document.querySelector('.l-q .mini').innerHTML=bibiSVG(ok?'joy':'worried');
+  } else {
+    L.i++; if(L.i>=L.qs.length) finishLesson(); else renderQ();
+  }
+}
+function finishLesson(){
+  document.getElementById('lBar').style.width='100%';
+  const k=keyOf(today());
+  const gained=10+L.correct*2;
+  const before=S.exDays[k]||0;
+  S.xp+=gained; S.lessons++; S.exDays[k]=before+1;
+  S.exCount=S.exCount||{}; S.exCount[L.cat]=(S.exCount[L.cat]||0)+1; save();
+  const goalNow=before+1===EX_GOAL;
+  const perfect=L.correct===L.qs.length;
+  if(perfect||goalNow) confetti();
+  document.getElementById('lessonBody').innerHTML=`<div class="result">
+    <div class="bibi-big">${bibiSVG(perfect?'joy':'happy')}</div>
+    <h3>${goalNow?'Obiettivo raggiunto!':perfect?'Esercizio perfetto!':'Esercizio completato!'}</h3>
+    <div style="color:var(--muted);font-weight:600">${L.correct} su ${L.qs.length} · ${before+1} ${before+1===1?'esercizio':'esercizi'} oggi</div>
+    <div class="result-stats"><div class="r-box"><div class="t">XP guadagnati</div><div class="v">+${gained}</div></div><div class="r-box g"><div class="t">Precisione</div><div class="v">${Math.round(L.correct/L.qs.length*100)}%</div></div></div>
+  </div><div class="l-spacer"></div><button class="btn" id="endBtn">Continua</button>`;
+  document.getElementById('endBtn').onclick=closeLesson;
+}
+function closeLesson(){document.getElementById('lesson').classList.remove('open');render();}
+document.getElementById('lessonClose').addEventListener('click',closeLesson);
+
+/* ============ Coriandoli ============ */
+function confetti(){
+  const c=document.getElementById('confetti'); const ctx=c.getContext('2d');
+  c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);
+  const cols=['#4A3D8F','#7A6BC4','#E2A13B','#3E8E63','#F2A7B8','#ECE9F7'];
+  const P=Array.from({length:120},()=>({x:innerWidth/2+(Math.random()-.5)*80,y:innerHeight*.35,vx:(Math.random()-.5)*12,vy:-Math.random()*12-4,s:Math.random()*7+4,r:Math.random()*6,vr:(Math.random()-.5)*.3,c:cols[Math.floor(Math.random()*cols.length)]}));
+  let f=0;(function loop(){ctx.clearRect(0,0,innerWidth,innerHeight);P.forEach(p=>{p.vy+=.35;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);ctx.restore();});
+    if(++f<150)requestAnimationFrame(loop);else ctx.clearRect(0,0,innerWidth,innerHeight);})();
+}
+
+/* Avvio */
+render(); tick(); checkReminders();
+if(!S.name){setTimeout(()=>openModal('happy','Ciao, sono Bibi!','Ti aiuterò a non dimenticare le tue attività spirituali di ogni giorno. Inserisci il tuo nome nel Profilo e scegli a che ora vuoi essere avvisato.','Iniziamo'),400);}
+</script>
+</body>
+</html>
